@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import numpy as np
 
 def get_fulldata(fname):
     data = []
@@ -13,7 +14,7 @@ def get_fulldata(fname):
 
 def get_header(fname):
     with open(fname,mode='r') as f:
-        header = f.readline()
+        header = f.readline().rstrip('\n').split('\t')
 
     return header
 
@@ -42,13 +43,14 @@ def get_parsedata(fname):
             end = step[num+1] - 1
             print("data {0} to {1}".format(start, end))
             data_step.append(data[start : end])
+            
+    return convert_float(data_step)
 
-    return data_step
 
 def convert_float(datalist):
     tmplist=[]
     for data in datalist:
-        tmpdata = map(lambda x: float(x), data)
+        tmpdata = np.array(data, dtype=float)
         tmplist.append(tmpdata)
     
     return tmplist
